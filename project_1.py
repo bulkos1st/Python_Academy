@@ -40,6 +40,7 @@ USER_DB = {
 
 WIDTH = 60
 SPACER = "-" * WIDTH
+texts_count = len(TEXTS)
 
 # Greet or welcome the user to the app
 print(SPACER)
@@ -61,17 +62,24 @@ while True:
 
 # Ask the user to select among the three texts stored in the variable TEXTS
 print(SPACER)
-print("We have 3 texts to be analyzed.".center(WIDTH, " "))
+print(f"We have {texts_count} texts to be analyzed.".center(WIDTH, " "))
 print(SPACER)
+
 while True:
-    select_text = int(input("Enter a number between. 1 and 3 to select: "))
-    if 1 <= select_text <= 3:
+    try:
+        select_text = int(input(f"Enter a number between 1 and {texts_count} to select text: "))
+    except ValueError:
+        print("Only numbers are allowed. App will exit now.")
+        exit()
+
+    if 1 <= select_text <= texts_count:
         break
     else:
-        print("Invalid value entered! Select vales 1, 2 or 3")
+        print(f"Invalid value entered! Select value between 1 and {texts_count} ")
 
 # Calculate the following statistics for the selected text:
-word_list = (TEXTS[select_text - 1].split())
+
+word_list = [word.strip(",.:") for word in TEXTS[select_text - 1].split()]
 titlecase_list = [word for word in word_list if word.istitle()]  # number of words starting with capital letter
 upcase_list = [word for word in word_list if word.isupper()]  # number of uppercase words
 lowcase_list = [word for word in word_list if word.islower()]  # number of lowercase words
